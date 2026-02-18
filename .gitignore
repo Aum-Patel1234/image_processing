@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+.envrc
+
+# Conda
+*.conda
+*.log
+conda-meta/
+
+# CMake / C++
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+*.cmake
+core/build/
+
+# Object files
+*.o
+*.obj
+*.out
+*.a
+*.lib
+
+# pybind11 stubgen output
+stubs/
+*.pyi
+
+# IDE / Editor
+.vscode/
+.idea/
+.cache/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

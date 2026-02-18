@@ -1,0 +1,27 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_PREFIX_PATH "$ENV{HOME}/vcpkg/installed/x64-linux/share" ${CMAKE_PREFIX_PATH})
+
+cmake_minimum_required(VERSION 3.14)
+project(image_processing)
+
+set(CMAKE_CXX_STANDARD 17)
+set(PYBIND11_FINDPYTHON ON)
+
+find_package(Python REQUIRED COMPONENTS Interpreter Development NumPy)
+find_package(pybind11 REQUIRED CONFIG)
+find_package(xtensor REQUIRED)
+find_package(xtensor-python REQUIRED)
+find_package(BLAS REQUIRED)
+find_package(xtensor-blas REQUIRED)
+include_directories(include)
+# add_subdirectory(src)
+
+file(GLOB_RECURSE SRC_FILES *.cpp)
+
+pybind11_add_module(image_processing
+    ${SRC_FILES}
+)
+
+target_link_libraries(image_processing PUBLIC pybind11::module xtensor xtensor-python xtensor-blas Python::NumPy) # ${BLAS_LIBRARIES}
+
+target_compile_definitions(image_processing PRIVATE VERSION_INFO=0.1.0)
