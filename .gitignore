@@ -45,3 +45,6 @@ stubs/
 # OS
 .DS_Store
 Thumbs.db
+
+# custom
+img.png
