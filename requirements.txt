@@ -1,4 +1,5 @@
 streamlit
 pybind11
 pybind11-stubgen
-opencv4  # for python ans c++
+numpy
+opencv-python-headless

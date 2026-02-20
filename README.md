@@ -13,18 +13,7 @@ Users can upload images or use a live camera to apply filters, edge detection, c
 <!-- * Provide interactive sliders for parameters -->
 * Support both uploaded images and live camera
 
----
-
-# ✅ Core Features Checklist
-
-## 🖼️ Image Input
-
-* [ ] Upload image
-* [ ] Drag & drop support
-* [ ] Webcam capture
-* [ ] Reset to original
-
----
+<!-- ---
 
 # 🎨 Basic Processing
 
@@ -226,6 +215,4 @@ streamlit-webrtc
 
 ---
 
-# 📜 License
-
-MIT
+# 📜 License -->
