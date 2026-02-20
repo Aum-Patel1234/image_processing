@@ -7,4 +7,3 @@
 
 cv::Mat convolutionRGB(const cv::Mat& img, const cv::Mat& kernel);
 cv::Mat convolution(const cv::Mat& img, const cv::Mat& kernel);
-cv::Mat gray_scale(const cv::Mat& img);

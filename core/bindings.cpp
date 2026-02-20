@@ -1,12 +1,12 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 
-#include <cstddef>
-#include <iostream>
 #include <opencv2/opencv.hpp>
 
+#include "blurs.hpp"
 #include "include/convolution.hpp"
 #include "include/edge_detection.hpp"
+#include "utils.hpp"
 namespace py = pybind11;
 
 // testing funcs for CMake
@@ -95,4 +95,25 @@ PYBIND11_MODULE(image_processing, m) {
     cv::Mat result = sobel_y_gray(gray_scale(mat));
     return mat_to_numpy(result);
   });
+
+  m.def("sobel_gray", [](py::array_t<uint8_t> arr) {
+    cv::Mat mat = numpy_to_mat(arr);
+    cv::Mat result = sobel_gray(gray_scale(mat));
+    return mat_to_numpy(result);
+  });
+
+  m.def("mean_blur", [](py::array_t<uint8_t> arr) {
+    cv::Mat mat = numpy_to_mat(arr);
+    cv::Mat result = mean_blur(mat);
+    return mat_to_numpy(result);
+  });
+
+  m.def(
+      "gaussian_blur",
+      [](py::array_t<uint8_t> arr, size_t ksize, float sigma) {
+        cv::Mat mat = numpy_to_mat(arr);
+        cv::Mat result = gaussian_blur(mat, ksize, sigma);
+        return mat_to_numpy(result);
+      },
+      py::arg("image"), py::arg("ksize"), py::arg("sigma"));
 }

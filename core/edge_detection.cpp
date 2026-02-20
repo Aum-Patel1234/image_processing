@@ -1,18 +1,6 @@
 #include "include/edge_detection.hpp"
 
-#include <opencv2/core.hpp>
-#include <opencv2/core/mat.hpp>
-
-cv::Mat normalize_to_U8(cv::Mat& conv) {
-  double minVal, maxVal;
-  cv::minMaxLoc(conv, &minVal, &maxVal);
-  conv = 255.0 * (conv - minVal) / (maxVal - minVal);
-
-  cv::Mat conv8;
-  conv.convertTo(conv8, CV_8U);
-
-  return conv8;
-}
+#include "include/utils.hpp"
 
 // NOTE:
 // The Sobel Y kernel, also known as the vertical gradient kernel, highlights horizontal edges. It works by calculating
@@ -43,10 +31,22 @@ cv::Mat sobel_x_gray(const cv::Mat& img) {
   img.convertTo(img32, CV_32F);
 
   cv::Mat kernel = (cv::Mat_<float>(3, 3) << -1, 0, 1, -2, 0, 2, -1, 0, 1);
-  cv::Mat conv = convolution(img32, kernel);
-
-  return normalize_to_U8(conv);
+  return normalize_to_U8(convolution(img32, kernel));
 }
 
-// cv::Mat sobel_y_RGB(const cv::Mat& img);
-// cv::Mat sobel_x_RGB(const cv::Mat& img);
+cv::Mat sobel_gray(const cv::Mat& img) {
+  CV_Assert(img.channels() == 1);
+  CV_Assert(img.type() == CV_8U);
+
+  cv::Mat img32;
+  img.convertTo(img32, CV_32F);
+  cv::Mat kernel = (cv::Mat_<float>(3, 3) << -1, 0, 1, -2, 0, 2, -1, 0, 1);
+  cv::Mat gx = convolution(img32, kernel);
+  kernel = (cv::Mat_<float>(3, 3) << -1, -2, -1, 0, 0, 0, 1, 2, 1);
+  cv::Mat gy = convolution(img32, kernel);
+
+  cv::Mat mag;
+  cv::magnitude(gx, gy, mag);
+
+  return normalize_to_U8(mag);
+}
