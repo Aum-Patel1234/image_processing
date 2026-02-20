@@ -6,5 +6,7 @@
 
 #include "convolution.hpp"
 
-cv::Mat sobel_y(const cv::Mat& img);
-cv::Mat sobel_x(const cv::Mat& img);
+cv::Mat sobel_y_gray(const cv::Mat& img);
+cv::Mat sobel_x_gray(const cv::Mat& img);
+cv::Mat sobel_y_RGB(const cv::Mat& img);
+cv::Mat sobel_x_RGB(const cv::Mat& img);

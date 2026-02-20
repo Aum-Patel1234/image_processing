@@ -2,6 +2,7 @@
 #include <pybind11/pybind11.h>
 
 #include <cstddef>
+#include <iostream>
 #include <opencv2/opencv.hpp>
 
 #include "include/convolution.hpp"
@@ -31,11 +32,16 @@ py::array mat_to_numpy(const cv::Mat& mat) {
   if (channels == 1) {
     // Grayscale
     std::vector<ssize_t> shape = {mat8.rows, mat8.cols};
+    // std::cout << "\n shape of vec: " << shape[0] << ", " << shape[1] << "\nstep in mat = " << mat8.step[0] << ", "
+    //           << mat8.step[1] << "\n";
+    //  shape of vec: 1598, 1234
+    // step in mat = 1234, 1
+    // IMPORTANT: means each col requires 1234 stride wherea as each row requires 1
     std::vector<ssize_t> strides = {static_cast<ssize_t>(mat8.step[0]), static_cast<ssize_t>(mat8.step[1])};
 
     return py::array_t<uint8_t>(shape, strides, mat8.data).attr("copy")();
   } else if (channels == 3) {
-    // RGB
+    // RGB here one extra stride for the 3 color channels
     std::vector<ssize_t> shape = {mat8.rows, mat8.cols, 3};
     std::vector<ssize_t> strides = {static_cast<ssize_t>(mat8.step[0]), static_cast<ssize_t>(mat8.step[1]), 1};
 
@@ -45,11 +51,13 @@ py::array mat_to_numpy(const cv::Mat& mat) {
   }
 }
 
-// Convert numpy array to cv::Mat (makes a copy to own data)
+// Convert numpy array makes a copy
 cv::Mat numpy_to_mat(py::array_t<uint8_t> arr) {
   py::buffer_info buf = arr.request();
   int rows = buf.shape[0];
   int cols = buf.shape[1];
+  // std::cout << "\nrows = " << rows << ", cols = " << cols << ", bufferdims = " << buf.ndim << "\n";
+  // rows = 1600, cols = 1236, bufferdims = 2
   int channels;
 
   if (buf.ndim == 2)
@@ -76,11 +84,15 @@ PYBIND11_MODULE(image_processing, m) {
 
   m.def("convolution_rgb", &convolutionRGB, "RGB convolution (CV_32FC3)");
 
-  m.def("sobel_x", [](py::array_t<uint8_t> arr) {
+  m.def("sobel_x_gray", [](py::array_t<uint8_t> arr) {
     cv::Mat mat = numpy_to_mat(arr);
-    cv::Mat result = sobel_x(mat);
+    cv::Mat result = sobel_x_gray(mat);
     return mat_to_numpy(result);
   });
 
-  m.def("sobel_y", &sobel_y, "Sobel Y edge filter");
+  m.def("sobel_y_gray", [](py::array_t<uint8_t> arr) {
+    cv::Mat mat = numpy_to_mat(arr);
+    cv::Mat result = sobel_y_gray(mat);
+    return mat_to_numpy(result);
+  });
 }
