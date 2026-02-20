@@ -22,7 +22,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
 
-      - name: Install system packages (build deps + OpenCV)
+      - name: Install system packages (build deps + OpenCV + pybind11)
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
@@ -31,7 +31,8 @@ jobs:
             pkg-config \
             libopencv-dev \
             python3-dev \
-            python3-numpy
+            python3-numpy \
+            pybind11-dev
 
       - name: Upgrade pip and install python packages (pybind11, numpy, others)
         run: |
@@ -47,7 +48,7 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake .. -DCMAKE_BUILD_TYPE=Release -Dpybind11_DIR=/usr/share/cmake/pybind11
 
       - name: Build C++ extension
         working-directory: ./core/build
