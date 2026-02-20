@@ -12,8 +12,9 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 - Grayscale image (gray) has 1 channel.
 - Each pixel in the grayscale image is computed as a weighted sum of B, G, R:
 
+https://en.wikipedia.org/wiki/Grayscale
 ```text
-Gray = 0.114 * B + 0.587 * G + 0.299 * R
+Gray = 0.299*R + 0.587*G + 0.11*B
 ```
 
 ## 2. What the single channel stores

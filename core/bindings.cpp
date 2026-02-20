@@ -86,13 +86,13 @@ PYBIND11_MODULE(image_processing, m) {
 
   m.def("sobel_x_gray", [](py::array_t<uint8_t> arr) {
     cv::Mat mat = numpy_to_mat(arr);
-    cv::Mat result = sobel_x_gray(mat);
+    cv::Mat result = sobel_x_gray(gray_scale(mat));
     return mat_to_numpy(result);
   });
 
   m.def("sobel_y_gray", [](py::array_t<uint8_t> arr) {
     cv::Mat mat = numpy_to_mat(arr);
-    cv::Mat result = sobel_y_gray(mat);
+    cv::Mat result = sobel_y_gray(gray_scale(mat));
     return mat_to_numpy(result);
   });
 }
